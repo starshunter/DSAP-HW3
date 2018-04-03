@@ -31,16 +31,29 @@ protected:
 	int capacity;
 	string name;
 	instrument **instrumentPtr;
-}
+public:
+	virtual void optimize()=0;
+};
 class superVIP:public customer
 {
-
+public:
+	void optimize();
 };
 class VIP:public customer
 {
-
+public:
+	void optimize();
 };
 class normal:public customer
 {
-
+public:
+	void optimize();
+};
+class bank
+{
+private:
+	int cus_cnt;
+	customer **cus_ptr;
+public:
+	void optimize();
 };
