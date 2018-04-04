@@ -1,59 +1,32 @@
 #include <iostream>
+#include <stdexcept>
 using namespace std;
 
-class instrument
-{
-protected:
-	int risk;
-	int premium;
-	int quantity;
-};
-class stock:public instrument
-{
+template <typename T>
+T getArrayElement(const T[],int,int) throw(overflow_error);
 
-};
-class bond:public instrument
+int main()
 {
+	double array[10]={5.2};
+	int len=sizeof(array)/sizeof(array[0]);
+	int index=0;
+	cin>>index;
+	try
+	{
+		cout<<getArrayElement(array,len,index)<<endl;
+	}
+	catch(overflow_error o)
+	{
+		cout<<o.what();
+	}
+	return 0;
+}
 
-};
-class fund:public instrument
+template <typename T>
+T getArrayElement(const T array[],int len,int index) throw(overflow_error)
 {
-
-};
-class insurance:public instrument
-{
-
-};
-class customer
-{
-protected:
-	int cnt;
-	int capacity;
-	string name;
-	instrument **instrumentPtr;
-public:
-	virtual void optimize()=0;
-};
-class superVIP:public customer
-{
-public:
-	void optimize();
-};
-class VIP:public customer
-{
-public:
-	void optimize();
-};
-class normal:public customer
-{
-public:
-	void optimize();
-};
-class bank
-{
-private:
-	int cus_cnt;
-	customer **cus_ptr;
-public:
-	void optimize();
-};
+	if(0<=index&&index<len)
+		return array[index];
+	else
+		throw overflow_error("Bad index!\n");
+}
