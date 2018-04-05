@@ -1,32 +1,42 @@
 #include <iostream>
 #include <stdexcept>
+#include <string>
+#include <cstring>
 using namespace std;
 
-template <typename T>
-T getArrayElement(const T[],int,int) throw(overflow_error);
+struct MyException: public runtime_error
+{
+    MyException(const string &s):runtime_error(s+" is not a valid password"){}
+};
+
+
 
 int main()
 {
-	double array[10]={5.2};
-	int len=sizeof(array)/sizeof(array[0]);
-	int index=0;
-	cin>>index;
-	try
+	string username,password;
+	cout<<"Enter your username"<<endl;
+	cin>>username;
+	bool valid=false;
+	while(!valid)
 	{
-		cout<<getArrayElement(array,len,index)<<endl;
-	}
-	catch(overflow_error o)
-	{
-		cout<<o.what();
+		cout<<"Enter your password (It must contain at least one number and longer than 8)"<<endl;
+		try
+		{
+			cin>>password;
+			bool a=false;
+			if(password.length()<8)
+				throw(MyException(password));
+			for(int i=0;i<password.length();i++)
+				if(password[i]-48>=0&&password[i]-48<=9)
+					a=true;
+			if(!a)
+				throw(MyException(password));
+			valid=true;
+		}
+		catch(MyException &e)
+		{
+			cout<<e.what()<<endl;
+		}
 	}
 	return 0;
-}
-
-template <typename T>
-T getArrayElement(const T array[],int len,int index) throw(overflow_error)
-{
-	if(0<=index&&index<len)
-		return array[index];
-	else
-		throw overflow_error("Bad index!\n");
 }
